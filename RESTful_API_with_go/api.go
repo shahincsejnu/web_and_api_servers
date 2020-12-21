@@ -5,6 +5,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
@@ -39,8 +40,10 @@ func main() {
 		},
 	}
 
-	http.HandleFunc("/", homepage)
-	http.HandleFunc("/articles", returnAllArticles)
+	router := mux.NewRouter().StrictSlash(true)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	router.HandleFunc("/", homepage)
+	router.HandleFunc("/articles", returnAllArticles)
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
